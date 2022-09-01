@@ -5,3 +5,8 @@
 * [Computer Vision](docs/CV.md)
 * [Docker](docs/docker.md)
 * [ROS 2](docs/ros2.md)
+
+
+## Pre requisites
+
+* Linux or Mac computer
