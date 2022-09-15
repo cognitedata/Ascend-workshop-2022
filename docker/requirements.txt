@@ -1,0 +1,6 @@
+ffmpeg-python
+pillow
+dacite
+requests
+opencv-python
+transforms3d

@@ -1,0 +1,53 @@
+version: "2.3"
+
+services:
+  ros2:
+    container_name: ros2_app
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.ros2
+    environment:
+      - DISPLAY
+      - QT_X11_NO_MITSHM=1
+    volumes:
+      - '/tmp/.docker.xauth:/tmp/.docker.xauth'
+      - '/tmp/.X11-unix:/tmp/.X11-unix'
+      - '/etc/localtime:/etc/localtime:ro'
+    network_mode: host
+    privileged: true
+  ros2-nvidia:
+    container_name: ros2_app_gpu
+    build:
+      context: .
+      dockerfile: Dockerfile.nvidia
+    runtime: nvidia
+    environment:
+      - DISPLAY
+      - QT_X11_NO_MITSHM=1
+      - XAUTHORITY=/tmp/.X11-unix
+      - NVIDIA_VISIBLE_DEVICES=all
+    volumes:
+      - '/tmp/.docker.xauth:/tmp/.docker.xauth'
+      - '/tmp/.X11-unix:/tmp/.X11-unix'
+      - '/etc/localtime:/etc/localtime:ro'
+    network_mode: host
+    privileged: true
+    security_opt:
+      - seccomp:unconfined
+  turtlesim:
+    container_name: turtlesim_app
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.turtlesim
+    network_mode: host
+    environment:
+      - DISPLAY
+      - QT_X11_NO_MITSHM=1
+      - XAUTHORITY=/tmp/.X11-unix
+    volumes:
+      - '/tmp/.docker.xauth:/tmp/.docker.xauth'
+      - '/tmp/.X11-unix:/tmp/.X11-unix'
+      - '/etc/localtime:/etc/localtime:ro'
+      - '/dev/input:/dev/input'
+    security_opt:
+      - seccomp:unconfined

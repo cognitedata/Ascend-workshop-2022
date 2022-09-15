@@ -1,0 +1,46 @@
+// See https://aka.ms/vscode-remote/.json for format details.
+{
+	"dockerFile": "Dockerfile.dev",
+	"name": "ros2_ws",
+	"build": {
+		"args": {
+			"WORKSPACE": "${containerWorkspaceFolder}"
+		}
+	},
+	"runArgs": [
+		"--name=ros2_ws_container",
+		"--network=host",
+		"--cap-add=SYS_PTRACE",
+		"--security-opt=seccomp:unconfined",
+		"--security-opt=apparmor:unconfined",
+		"--volume=/tmp/.X11-unix:/tmp/.X11-unix",
+	],
+	"containerEnv": {
+		// "DISPLAY": "<YOUR_IP>:0", //Add your IP and uncomment if using mac
+		"DISPLAY": "${localEnv:DISPLAY}" //Comment out if using mac,
+	},
+	// Set *default* container specific settings.json values on container create.
+	"settings": {
+		"terminal.integrated.profiles.linux": {
+			"bash": {
+				"path": "bash"
+			},
+		},
+		"terminal.integrated.defaultProfile.linux": "bash"
+	},
+	"extensions": [
+		"dotjoshjohnson.xml",
+		// "zachflower.uncrustify",
+		"xaver.clang-format",
+		"notskm.clang-tidy",
+		"ms-azuretools.vscode-docker",
+		"ms-python.python",
+		// "ms-iot.vscode-ros",
+		"ms-vscode.cpptools",
+		"redhat.vscode-yaml",
+		"smilerobotics.urdf",
+		"streetsidesoftware.code-spell-checker",
+		"twxs.cmake",
+		"yzhang.markdown-all-in-one"
+	]
+}

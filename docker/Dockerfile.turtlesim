@@ -1,0 +1,18 @@
+FROM ros:foxy
+
+# Use bash by default
+SHELL ["/bin/bash", "-c"]
+
+RUN \
+  apt-get update && \
+  apt-get -y install libgl1-mesa-glx libgl1-mesa-dri && \
+  rm -rf /var/lib/apt/lists/*
+
+# Specify dependencies explicitly (DO NOT USE ROSDEP)
+RUN apt-get update && apt-get install -y \
+    ros-${ROS_DISTRO}-turtlesim \
+    ros-${ROS_DISTRO}-rviz2 && \
+    rm -rf /var/lib/apt/lists/*
+
+# launch ros package
+CMD ["ros2", "run", "turtlesim", "turtlesim_node"]

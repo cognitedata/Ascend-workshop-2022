@@ -1,0 +1,50 @@
+name: ROS CI
+
+on:
+  pull_request:
+    branches: [ main ] # run only when making a PR for main
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "docs/**"
+
+jobs:
+  pre-commit:
+    name: Linting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+          cache: "pip"
+      - run: |
+          pip install -r requirements.txt \
+          pip install empy
+      - name: Setup ROS 2
+        uses: ros-tooling/setup-ros@v0.2
+        with:
+          required-ros-distributions: foxy
+      - name: Install cpp dependencies
+        run: |
+          sudo apt-get -y install --no-install-recommends \
+          ros-foxy-ament-clang-format \
+          ros-foxy-ament-cmake \
+          ros-foxy-pcl-conversions \
+          ros-foxy-xacro \
+          ros-foxy-rviz2 \
+          liburdfdom-tools \
+          libtins-dev \
+          clang-format \
+          libblas-dev \
+          liblapack-dev \
+          libeigen3-dev \
+          ros-foxy-eigen3-cmake-module
+      - run: pip install catkin-pkg lark
+      - name: Build ros2 workspace
+        run: |
+          source /opt/ros/foxy/setup.bash \
+          cd ros2_ws && colcon build && source install/setup.bash
+      # - name: Run tests
+      #   run: colcon test && colcon test-result --verbose

@@ -1,0 +1,9 @@
+ffmpeg-python
+pillow
+dacite
+requests
+cognite-sdk
+cognite-extractor-utils
+opencv-python
+transforms3d
+pytest

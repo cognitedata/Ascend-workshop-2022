@@ -1,0 +1,38 @@
+FROM ros:foxy
+
+COPY . .
+# RUN rm -rf ros2_ws/build ros2_ws/install ros2_ws/log
+
+# install standard utils
+RUN apt-get update \
+    && apt-get -y install --no-install-recommends \
+    vim \
+    openssh-server \
+    python3-pip \
+    ffmpeg
+
+# install rqt
+RUN apt-get -y install --no-install-recommends \
+    ros-foxy-rqt* \
+    ros-foxy-ament-clang-format \
+    ros-foxy-pcl-conversions \
+    ros-foxy-xacro \
+    ros-foxy-rviz2 \
+    ros-foxy-slam-toolbox \
+    ros-foxy-navigation2 \
+    ros-foxy-nav2-bringup \
+    ros-foxy-tf-transformations \
+    liburdfdom-tools \
+    libtins-dev \
+    clang-format \
+    libblas-dev \
+    liblapack-dev \
+    libeigen3-dev \
+    ros-foxy-eigen3-cmake-module
+
+RUN pip install -r requirements.txt
+
+RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> ~/.bashrc
+RUN echo "source ros2_ws/install/setup.bash" >> ~/.bashrc
+
+RUN pip install pre-commit
