@@ -14,21 +14,38 @@ Added docker images for:
 
 ## Pre requisites
 
-* Linux or Mac computer
+* Linux, Mac or Windows (with WSL2 preferably)
+* Docker
+* docker-compose  
+
+also for running the `Makefile`:
+
+```sh
+$ sudo apt install make
+```
+
 
 ## ROS2 + Docker turtlesim example
 
-Start simulator:
+#### Start simulator:
 
 ```sh
 $ make ros2-turtlesim
 ```
 
-Then, start ros2 keyboard teleop
+#### Then, start ros2 keyboard teleop
 
 ```sh
 $ make ros2-app
 ```
+
+or for nvidia gpu
+
+```sh
+$ make ros2-app-nvidia
+```
+
+
 
 ## Airsim + Python + Docker example
 
