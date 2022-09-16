@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
-          python-version: "3.8"
+          python-version: "3.6"
           cache: "pip"
       - run: |
           pip install -r docker/requirements.txt \
@@ -29,7 +29,7 @@ jobs:
       - name: Install cpp dependencies
         run: |
           sudo apt-get -y install --no-install-recommends \
-          ros-foxy-ament-clang-format \Cmake
+          ros-foxy-ament-clang-format \
           ros-foxy-ament-cmake \
           ros-foxy-pcl-conversions \
           ros-foxy-xacro \
