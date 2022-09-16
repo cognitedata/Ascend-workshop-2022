@@ -47,8 +47,6 @@ jobs:
         run: |
           cd ros2_ws && \
             source /opt/ros/foxy/setup.bash && \
-            colcon build --packages-select ouster_msgs && \
-            source install/setup.bash && \
             colcon build && \
             source install/setup.bash
       # - name: Run tests
