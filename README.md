@@ -5,6 +5,12 @@
 * [Computer Vision](docs/CV.md)
 * [Setup ROS2 + Docker in vscode](docs/development.md)
 
+Added docker images for:
+
+* Running ros2
+* Running ros2 turtlesim
+* Running airsim with [docker-nvidia](docs/docker_nvidia.md)
+
 ## Pre requisites
 
 * Linux or Mac computer
@@ -27,14 +33,9 @@ $ make ros2-app
 
 * [Docker with Nvidia GPU](docs/docker_nvidia.md)
 
-When installed, try running Airsim or Gazebo:
+When installed, try running Airsim:
 
 Airsim:
 ```sh
-$ 
-```
-
-Gazebo:
-```sh
-$ 
+$ make airsim-up
 ```

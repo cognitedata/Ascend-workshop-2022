@@ -1,4 +1,4 @@
-.PHONY: ros2-app ros2-turtlesim
+.PHONY: ros2-app ros2-turtlesim airsim-up airsim-down
 
 
 # ros2-app:
@@ -16,3 +16,10 @@ run-ros2:
 
 ros2-turtlesim:
 	sudo xhost local:root && docker-compose up --build turtlesim
+
+
+airsim-up:
+		sudo xhost local:root && docker-compose up --build airsim
+
+airsim-down:
+		docker-compose down
