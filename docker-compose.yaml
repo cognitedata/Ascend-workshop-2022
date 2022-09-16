@@ -19,7 +19,7 @@ services:
     container_name: ros2_app_gpu
     build:
       context: .
-      dockerfile: Dockerfile.nvidia
+      dockerfile: docker/Dockerfile.ros2_nvidia
     runtime: nvidia
     environment:
       - DISPLAY
@@ -51,7 +51,7 @@ services:
       - '/dev/input:/dev/input'
     security_opt:
       - seccomp:unconfined
-  airsim-nvidia:
+  airsim:
     container_name: airsim
     build:
       context: ./nvidia

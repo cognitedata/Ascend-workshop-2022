@@ -7,7 +7,8 @@
 
 Added docker images for:
 
-* Running ros2
+* Running ros2. Added an arbitrary ros2 project as well (ros2 ouster lidar driver)
+* Running ros2, but intended for nvidia GPU.
 * Running ros2 turtlesim
 * Running airsim with [docker-nvidia](docs/docker_nvidia.md)
 
@@ -29,7 +30,9 @@ Then, start ros2 keyboard teleop
 $ make ros2-app
 ```
 
-## Prequisites for running docker with GPU acceleration
+## Airsim + Python + Docker example
+
+Prequisites for running docker with GPU acceleration
 
 * [Docker with Nvidia GPU](docs/docker_nvidia.md)
 

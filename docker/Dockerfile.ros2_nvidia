@@ -1,0 +1,85 @@
+# this Dockerfile is inspired by
+# https://github.com/AndrejOrsula/drl_grasping/blob/master/docker/Dockerfile
+
+FROM nvidia/cudagl:11.4.2-runtime-ubuntu20.04
+
+# Use bash by default
+SHELL ["/bin/bash", "-c"]
+
+### Set non-interactive installation
+ARG DEBIAN_FRONTEND=noninteractive
+
+# install standard utils
+RUN apt-get update \
+    && apt-get -yq install --no-install-recommends wget \
+    mesa-utils \
+    software-properties-common \
+    build-essential \
+    tzdata \
+    curl \
+    python3-pip
+
+RUN add-apt-repository -y ppa:oibaf/graphics-drivers \
+    && apt-get update -y \
+    && apt upgrade -y
+
+### Install ROS 2
+ARG PYTHON_VERSION=3
+ARG ROS2_DISTRO=foxy
+ENV ROS2_DISTRO=${ROS2_DISTRO}
+RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg && \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2.list >/dev/null && \
+    apt update && \
+    apt install -yq --no-install-recommends \
+    libtins-dev \
+    libblas-dev \
+    liblapack-dev \
+    libeigen3-dev \
+    ros-${ROS2_DISTRO}-ros-base \
+    ros-${ROS2_DISTRO}-slam-toolbox \
+    ros-${ROS2_DISTRO}-navigation2 \
+    ros-${ROS2_DISTRO}-nav2-bringup \
+    ros-${ROS2_DISTRO}-tf-transformations \
+    ros-${ROS2_DISTRO}-xacro \
+    ros-${ROS2_DISTRO}-rviz2 \
+    ros-${ROS2_DISTRO}-robot-localization \
+    ros-${ROS2_DISTRO}-joy-linux \
+    ros-${ROS2_DISTRO}-teleop-twist-joy \
+    ros-${ROS2_DISTRO}-pcl-conversions \
+    ros-${ROS2_DISTRO}-eigen3-cmake-module \
+    python${PYTHON_VERSION}-colcon-common-extensions \
+    python${PYTHON_VERSION}-vcstool \
+    python${PYTHON_VERSION}-argcomplete \
+    python${PYTHON_VERSION}-rosdep
+
+
+RUN apt-get update \
+    && apt-get install -y -qq --no-install-recommends \
+    libglvnd0 \
+    libgl1 \
+    libglx0 \
+    libegl1 \
+    libxext6 \
+    libx11-6
+
+# Env vars for the nvidia-container-runtime.
+ENV NVIDIA_VISIBLE_DEVICES all
+ENV NVIDIA_DRIVER_CAPABILITIES graphics,utility,compute
+ENV QT_X11_NO_MITSHM 1
+
+WORKDIR /app
+
+# install python dependencies
+COPY docker/requirements.txt ./requirements.txt
+RUN pip3 install -r requirements.txt
+
+COPY ./ros2_ws/src ./ros2_ws/src
+RUN cd ros2_ws && \
+    source /opt/ros/foxy/setup.bash && \
+    colcon build && \
+    source install/setup.bash
+
+COPY docker/scripts/ros_entrypoint.sh /
+
+ENTRYPOINT ["/ros_entrypoint.sh"]
+CMD ["bash"]
