@@ -20,7 +20,7 @@ jobs:
           python-version: "3.8"
           cache: "pip"
       - run: |
-          pip install -r requirements.txt \
+          pip install -r docker/requirements.txt \
           pip install empy
       - name: Setup ROS 2
         uses: ros-tooling/setup-ros@v0.2
